@@ -1,0 +1,54 @@
+          // MEDIAN OF TWO SORTED ARRAYS USING BINARY_SEARCH //
+class Solution {
+    public double Ans(int n,int m,int l1,int l2,int r1,int r2){
+        if((n+m)%2!=0){
+            return Math.min(r1,r2);
+        }
+        double ans1 = Math.max(l1,l2);
+        double ans2 = Math.min(r1,r2);
+        double overAllAns = (ans1+ans2)/2.0;
+        return overAllAns;
+    }
+    public double binarySearch(int[] a,int[] b,int medianInd){
+        int start=0;
+        int end = Math.min(a.length,b.length);
+        boolean flag=true; // true determines that array a is smaller
+        if(a.length > b.length){flag=false;}
+        while(start<=end){
+            int mid = start + (end-start)/2;
+            int restEle = medianInd-mid; // how many elements that i am left with
+            int l1,l2,r1,r2;
+            l1=l2=Integer.MIN_VALUE;
+            r1=r2=Integer.MAX_VALUE;
+            if(!flag){
+                if(mid!=0){l1=b[mid-1];}
+                if(restEle!=0){l2=a[restEle-1];}
+                if(mid!=b.length){r1=b[mid];}
+                if(restEle!=a.length){r2=a[restEle];}
+            }else{
+                if(mid!=0){l1=a[mid-1];}
+                if(restEle!=0){l2=b[restEle-1];}
+                if(mid!=a.length){r1=a[mid];}
+                if(restEle!=b.length){r2=b[restEle];}
+            }
+            if(l1<=r2 && l2<=r1){
+                return Ans(a.length,b.length,l1,l2,r1,r2);
+            }
+            if(l1 > r2){
+                end = mid-1;
+            }else{
+                start = mid+1;
+            }
+        }
+        return -1;
+    }
+    public double medianOf2(int a[], int b[]) {
+        // Your Code Here
+        int n = a.length;
+        int m = b.length;
+        if(n==0 && m==1){return b[0];}
+        if(n==1 && m==0){return a[0];}
+        int medianInd = (n+m)/2;
+        return binarySearch(a,b,medianInd);
+    }
+}
